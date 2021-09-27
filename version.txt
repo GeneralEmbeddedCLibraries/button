@@ -1,0 +1,22 @@
+============================================================
+ Version 1.0.0 (xx.xx.2021)
+============================================================
+ 
+ Brief:
+ - Initial release
+
+ Features: 
+ - Configuration via single table
+ - Button handling: checking state, filtering, callback functions
+   on press and release button
+
+ Solved issues:
+ -
+
+ Known issues:
+ - 
+
+ Todo:
+ - 
+   
+============================================================
