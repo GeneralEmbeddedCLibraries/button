@@ -7,10 +7,11 @@
 * @brief    Button manipulations
 * @author   Ziga Miklosic
 * @date     27.09.2021
+* @version	V1.0.0
 */
 ////////////////////////////////////////////////////////////////////////////////
 /**
-* @addtogroup LED_API
+* @addtogroup BUTTON_API
 * @{ <!-- BEGIN GROUP -->
 */
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,9 +26,19 @@
 #include <stdbool.h>
 #include "project_config.h"
 
+#include "../../button_cfg.h"
+#include "drivers/peripheral/gpio/gpio.h"
+
 ////////////////////////////////////////////////////////////////////////////////
 // Definitions
 ////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * 	Module version
+ */
+#define BUTTON_VER_MAJOR		( 1 )
+#define BUTTON_VER_MINOR		( 0 )
+#define BUTTON_VER_DEVELOP		( 0 )
 
 /**
  * 	Button status
@@ -45,31 +56,46 @@ typedef enum
 typedef enum
 {
     eBUTTON_OFF 	= 0,		/**<Button idle - not pressed */
-	eBUTTON_ON		= 1,		/**<Button pressed */
-	eBUTTON_UNKNOWN = 2,		/**<During startup */
+	eBUTTON_ON,					/**<Button pressed */
+	eBUTTON_UNKNOWN,			/**<During startup */
 } button_state_t;
 
 /**
- * 	End-switches
+ * 	Button polarity
  */
 typedef enum
 {
-	eBUTTON_RE = 0,
+	eBUTTON_POL_ACTIVE_HIGH = 0,	/**<Active high polarity */
+	eBUTTON_POL_ACTIVE_LOW,			/**<Active low polatiry */
+} button_polarity_t;
 
-	eBUTTON_END_SW_NUM_OF,
-} button_end_sw_opt_t;
+/**
+ * 	Button configuration
+ */
+typedef struct
+{
+	gpio_pins_t 		gpio_pin;		/**<GPIO pin */
+	button_polarity_t	polarity;		/**<Polarity */
+	bool				lpf_en;			/**<Enable LPF */
+	float32_t			lpf_fc;			/**<Low pass filter cutoff freq */
+} button_cfg_t;
+
+/**
+ * 	Callback functions
+ */
+typedef void(*pf_button_callback)(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
 ////////////////////////////////////////////////////////////////////////////////
 button_status_t	button_init					(void);
-void            button_hndl                 (void);
-button_state_t  button_get_state            (void);
-void            button_pressed_callback     (void);
-void            button_release_callback     (void);
-float32_t		button_get_press_time		(void);
-bool			button_get_end_sw			(const button_end_sw_opt_t sw);
-void			button_change_filter_fc		(const float32_t fc);
+button_status_t button_is_init				(bool * const p_is_init);
+button_status_t button_hndl                 (void);
+button_status_t button_get_state            (const button_num_t num, bool * const p_state);
+button_status_t button_change_filter_fc		(const button_num_t num, const float32_t fc);
+button_status_t button_get_press_time		(const button_num_t num, float32_t * const p_press_time);
+button_status_t button_register_callback	(const button_num_t num, pf_button_callback press, pf_button_callback release);
+button_status_t button_unregister_callback	(const button_num_t num);
 
 #endif // __BUTTON_H_
 ////////////////////////////////////////////////////////////////////////////////
