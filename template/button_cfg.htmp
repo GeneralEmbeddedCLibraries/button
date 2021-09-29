@@ -59,7 +59,9 @@ typedef enum
 {
 	// USER CODE START...
 
-	eBUTTON_RE = 0,
+	eBUTTON_USER = 0,
+	eBUTTON_RE,
+
 
 	// USER CODE END...
 

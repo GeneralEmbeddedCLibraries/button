@@ -50,13 +50,6 @@
 #define BUTTON_LIM_TIME( time )			(( time > 1E6f ) ? ( 1E6f ) : ( time ))
 
 /**
- * 	Default LPF fc
- *
- * 	Unit: Hz
- */
-#define BUTTON_LPF_FC_HZ				( 1.0f )
-
-/**
  * 	Button live data
  */
 typedef struct
@@ -163,6 +156,7 @@ static button_status_t button_internal_init(void)
 		if ( true == gp_cfg_table[num].lpf_en )
 		{
 			// Init filter
+			// NOTE: Comparator level set to 0.05 (5%/95%)---> 3*Tao is 95% for RC 1st order filter
 			if ( eFILTER_OK != filter_bool_init( &( g_button[num].filt ), gp_cfg_table[num].lpf_fc, BUTTON_HNDL_FREQ_HZ, 0.05f ))
 			{
 				BUTTON_DBG_PRINT( "BUTTON: LPF initialisation error at button number %d!", num );

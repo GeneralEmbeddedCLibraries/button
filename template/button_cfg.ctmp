@@ -22,7 +22,6 @@
 #include "button_cfg.h"
 #include "button/src/button.h"
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // Variables
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +52,8 @@ static const button_cfg_t g_button_cfg[ eBUTTON_NUM_OF ] =
 	// -------------------------------------------------------------------------------------------------------------------------
 	//	Gpio pin						Button polarity							LPF enable			Default LPF fc
 	// -------------------------------------------------------------------------------------------------------------------------
-	{ 	.gpio_pin = eGPIO_RE_BTN,		.polarity = eBUTTON_POL_ACTIVE_LOW,		.lpf_en = true, 	.lpf_fc = 1.0f 				},
+	{ 	.gpio_pin = eGPIO_USER_BTN,		.polarity = eBUTTON_POL_ACTIVE_LOW,		.lpf_en = false, 	.lpf_fc = 1.0f 				},
+	{ 	.gpio_pin = eGPIO_RE_BTN,		.polarity = eBUTTON_POL_ACTIVE_LOW,		.lpf_en = false, 	.lpf_fc = 1.0f 				},
 
 
 	// USER CODE END...

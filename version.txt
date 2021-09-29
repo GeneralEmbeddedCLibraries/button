@@ -7,8 +7,9 @@
 
  Features: 
  - Configuration via single table
- - Button handling: checking state, filtering, callback functions
-   on press and release button
+ - Debounce filtering
+ - Callbacks on pressed and released event
+ - Active & idle timings measurement
 
  Solved issues:
  -
