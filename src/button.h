@@ -93,8 +93,8 @@ button_status_t button_is_init				(bool * const p_is_init);
 button_status_t button_hndl                 (void);
 button_status_t button_get_state            (const button_num_t num, bool * const p_state);
 button_status_t button_change_filter_fc		(const button_num_t num, const float32_t fc);
-button_status_t button_get_press_time		(const button_num_t num, float32_t * const p_press_time);
-button_status_t button_register_callback	(const button_num_t num, pf_button_callback press, pf_button_callback release);
+button_status_t button_get_time				(const button_num_t num, float32_t * const p_active_time, float32_t * const p_idle_time);
+button_status_t button_register_callback	(const button_num_t num, pf_button_callback pf_pressed, pf_button_callback pf_released);
 button_status_t button_unregister_callback	(const button_num_t num);
 
 #endif // __BUTTON_H_
