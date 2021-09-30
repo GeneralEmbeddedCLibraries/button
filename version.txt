@@ -1,5 +1,5 @@
 ============================================================
- Version 1.0.0 (xx.xx.2021)
+ Version 1.0.0 (30.09.2021)
 ============================================================
  
  Brief:
@@ -8,7 +8,7 @@
  Features: 
  - Configuration via single table
  - Debounce filtering
- - Callbacks on pressed and released event
+ - Event callbacks on pressed and released event
  - Active & idle timings measurement
 
  Solved issues:
