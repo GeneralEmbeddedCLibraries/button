@@ -21,6 +21,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <stdint.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #include "button.h"
 #include "drivers/peripheral/gpio/gpio.h"
@@ -29,6 +30,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Definitions
 ////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * 	Check filter module compatibility
+ */
+static_assert( 1 == FILTER_VER_MAJOR );
+static_assert( 0 == FILTER_VER_MINOR );
+static_assert( 2 >= FILTER_VER_DEVELOP );
 
 /**
  * 	Button handler period
