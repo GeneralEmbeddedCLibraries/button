@@ -1,27 +1,37 @@
 # **Button library**
-General C library for button action handling.
-
-
-
+General C library for button action handling. Library is simple to use as it is configurable by single table. It also features debouncing filtering. 
 
 
 ## **Dependencies**
 
-Button library is dependend from low level GPIO module. Following functions must be provided:
+### **1. GPIO module**
+--- 
+Button library is dependend from low level GPIO module thus following function prototypes must be provided:
   - gpio_status_t gpio_is_init(bool * const p_is_init)
   - void gpio_set(const gpio_pins_t pin, const gpio_state_t state)
 
-For library version V1.0.0 GPIO translation unit must be under following project path:
+GPIO translation unit must be under following project path:
 ```C
 #include "drivers/peripheral/gpio/gpio.h"
 ```
 
+### **2. Filter module**
+--- 
+Button library is also dependent from filter module. Filter module sources can be found under this [link](https://github.com/GeneralEmbeddedCLibraries/filter). Filter module must take following path:
+
+```C
+#include "middleware/filter/src/filter.h"
+```
+
+### **3. float32_t definition**
 Definition of float32_t must be provided by user. In current implementation it is defined in "project_config.h". Just add following statement to your code where it suits the best.
 
 ```C
 // Define float
 typedef float float32_t;
 ```
+### **4. Static assert**
+Additionaly module uses "static_assert()" function defined in <assert.h>. It is being used for cross-module compatibility.
 
  ## **API**
 ---
@@ -130,6 +140,10 @@ if ( eBUTTON_OK != button_init())
     // Further actions here...
 }
 
+/**
+ * @note    Make sure to have a fixed period of BUTTON_CFG_HNDL_PERIOD_S in order
+ *          to get equidistant sampling for filtering purposes
+ */ 
 @BUTTON_CFG_HNDL_PERIOD_S period
 {
     // Handle button
@@ -168,7 +182,6 @@ static void my_button_pressed(void)
 {
     // Put actions on button release event here...
 }
-
 
 static void my_button_released(void)
 {
