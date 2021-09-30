@@ -113,9 +113,9 @@ typedef enum
  * 	 Assertion macros
  */
 #if ( 1 == BUTTON_CFG_ASSERT_EN )
-	#define BUTTON_ASSERT(x)						PROJECT_CONFIG_ASSERT(x)
+	#define BUTTON_ASSERT(x)					PROJECT_CONFIG_ASSERT(x)
 #else
-	#define BUTTON_ASSERT(x)						{ ; }
+	#define BUTTON_ASSERT(x)					{ ; }
 #endif
 
 // USER CODE END...
