@@ -1,0 +1,23 @@
+============================================================
+ Version 1.0.0 (30.09.2021)
+============================================================
+ 
+ Brief:
+ - Initial release
+
+ Features: 
+ - Configuration via single table
+ - Debounce filtering
+ - Event callbacks on pressed and released event
+ - Active & idle timings measurement
+
+ Solved issues:
+ -
+
+ Known issues:
+ - 
+
+ Todo:
+ - 
+   
+============================================================
