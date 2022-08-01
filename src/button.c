@@ -36,7 +36,7 @@
  */
 static_assert( 1 == FILTER_VER_MAJOR );
 static_assert( 0 == FILTER_VER_MINOR );
-static_assert( 2 >= FILTER_VER_DEVELOP );
+static_assert( 2 <= FILTER_VER_DEVELOP );
 
 /**
  * 	Button handler period
