@@ -6,8 +6,8 @@ General C library for button action handling. Library is simple to use as it is 
 
 ### **1. GPIO module**
 Button library is dependend from low level GPIO module thus following function prototypes must be provided:
-  - gpio_status_t gpio_is_init(bool * const p_is_init)
-  - void gpio_set(const gpio_pins_t pin, const gpio_state_t state)
+  - *gpio_status_t gpio_is_init(bool * const p_is_init)*
+  - *void gpio_get(const gpio_pins_t pin)*
 
 GPIO translation unit must be under following project path:
 ```
@@ -28,7 +28,7 @@ Additionaly module uses "_Static_assert()" function defined in <assert.h>. It is
 ## **General Embedded C Libraries Ecosystem**
 In order to be part of *General Embedded C Libraries Ecosystem* this module must be placed in following path: 
 ```
-root/middleware/cli/cli/"module_space"
+root/drivers/hmi/button/button/"module_space"
 ```
 
  ## **API**
@@ -127,6 +127,8 @@ static const button_cfg_t g_button_cfg[ eBUTTON_NUM_OF ] =
 4. Include, initialize & handle:
 
 Main button handler **button_hndl()** must be called with a fixed period of **BUTTON_CFG_HNDL_PERIOD_S** (defined inside button_cfg.h). 
+
+**NOTICE: Before using Button module GPIO shall be initialized!**
 
 ```C
 // Include single file to your application!

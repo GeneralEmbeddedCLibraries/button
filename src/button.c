@@ -377,9 +377,7 @@ static void	button_manage_timings(const button_num_t num, const button_state_t s
 ////////////////////////////////////////////////////////////////////////////////
 button_status_t	button_init(void)
 {
-	button_status_t status 	= eBUTTON_OK;
-
-	BUTTON_ASSERT( false == gb_is_init );
+	button_status_t status = eBUTTON_OK;
 
 	if ( false == gb_is_init )
 	{
