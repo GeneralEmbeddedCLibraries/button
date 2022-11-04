@@ -21,9 +21,6 @@ Filter module must take following path:
 "root/middleware/filter/src/filter.h"
 ```
 
-### **3. Static assert**
-Additionaly module uses "_Static_assert()" function defined in <assert.h>. It is being used for cross-module compatibility.
-
 ## **General Embedded C Libraries Ecosystem**
 In order to be part of *General Embedded C Libraries Ecosystem* this module must be placed in following path: 
 ```
