@@ -1,6 +1,5 @@
 # **Button library**
-General C library for button action handling. Library is simple to use as it is configurable by single table. It also features debouncing filtering. 
-
+Button library takes care of button handling and debouncing if configured to do so. Library is fully configured via configuration table.
 
 ## **Dependencies**
 
@@ -45,9 +44,12 @@ root/drivers/hmi/button/button/"module_space"
 
 
 ## **How to use**
----
 
-1. List all buttons inside **button_cfg.h** file:
+**GENERAL NOTICE: Put all user code between sections: USER CODE BEGIN & USER CODE END!**
+
+1. Copy template files to root directory of module.
+
+2. List all buttons inside **button_cfg.h** file:
 ```C
 /**
  * 	List of Buttons
@@ -74,9 +76,8 @@ typedef enum
 } button_num_t;
 ```
 
-2. Configure Button module inside **button_cfg.h** file:
+3. Configure Button module inside **button_cfg.h** file:
 
----
 | Configuration | Description |
 | --- | --- |
 | **BUTTON_CFG_HNDL_PERIOD_S** 	| Main button handler period in seconds. |
@@ -87,7 +88,7 @@ typedef enum
 | **BUTTON_ASSERT** 			| Definition of assert. |
 
 
-3. Set up configuration table inside **button_cfg.c** file:
+4. Set up configuration table inside **button_cfg.c** file:
 ```C
 /**
  * 	Button configuration table
@@ -124,7 +125,7 @@ static const button_cfg_t g_button_cfg[ eBUTTON_NUM_OF ] =
 };
 ```
 
-4. Include, initialize & handle:
+5. Include, initialize & handle:
 
 Main button handler **button_hndl()** must be called with a fixed period of **BUTTON_CFG_HNDL_PERIOD_S** (defined inside button_cfg.h). 
 
@@ -169,7 +170,7 @@ if ( eBUTTON_OK != button_init())
 }
 ```
 
-5. Register and use callback functions
+6. Register and use callback functions
 ```C
 // Declare callback functions
 static void my_button_pressed(void);
