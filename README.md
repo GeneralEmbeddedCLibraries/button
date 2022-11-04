@@ -16,7 +16,7 @@ GPIO translation unit must be under following project path:
 ### **2. Filter module**
 [Filter module](https://github.com/GeneralEmbeddedCLibraries/filter) is not mandatory to be used as it can be disabled via *BUTTON_CFG_FILTER_EN* inside ***button_cfg.h*** file.
 
-Filter module must take following path:
+If Filter module is used, it must take following path:
 ```
 "root/middleware/filter/src/filter.h"
 ```
