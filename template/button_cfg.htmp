@@ -36,7 +36,7 @@
 #include "project_config.h"
 
 // Debug communication port
-#include "middleware/debug_comm_port/com_dbg.h"
+#include "middleware/cli/cli/src/cli.h"
 
 // USER CODE END...
 
@@ -60,8 +60,6 @@ typedef enum
 	// USER CODE START...
 
 	eBUTTON_USER = 0,
-	eBUTTON_RE,
-
 
 	// USER CODE END...
 
@@ -76,6 +74,11 @@ typedef enum
  * 	Unit: sec
  */
 #define BUTTON_CFG_HNDL_PERIOD_S				( 0.01f )
+
+/**
+ * 	Enable/Disable debounce filtering
+ */
+#define BUTTON_CFG_FILTER_EN					( 0 )
 
 /**
  * 	Enable/Disable debug mode
@@ -103,7 +106,7 @@ typedef enum
  * 	Debug communication port macros
  */
 #if ( 1 == BUTTON_CFG_DEBUG_EN )
-	#define BUTTON_DBG_PRINT( ... )				( com_dbg_print( eCOM_DBG_CH_NONE, (const char*) __VA_ARGS__ ))
+	#define BUTTON_DBG_PRINT( ... )				( cli_printf( __VA_ARGS__ ))
 #else
 	#define BUTTON_DBG_PRINT( ... )				{ ; }
 

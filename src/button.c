@@ -25,17 +25,22 @@
 
 #include "button.h"
 #include "drivers/peripheral/gpio/gpio.h"
-#include "middleware/filter/src/filter.h"
+
+#if ( 1 == BUTTON_CFG_FILTER_EN )
+	#include "middleware/filter/src/filter.h"
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-/**
- * 	Check filter module compatibility
- */
-_Static_assert( 1 == FILTER_VER_MAJOR );
-_Static_assert( 1 == FILTER_VER_MINOR );
+#if ( 1 == BUTTON_CFG_FILTER_EN )
+	/**
+	 * 	Check filter module compatibility
+	 */
+	_Static_assert( 1 == FILTER_VER_MAJOR );
+	_Static_assert( 1 == FILTER_VER_MINOR );
+#endif
 
 /**
  * 	Button handler period
@@ -61,7 +66,9 @@ _Static_assert( 1 == FILTER_VER_MINOR );
  */
 typedef struct
 {
-	p_filter_bool_t		filt;		/**<Boolean filter */
+	#if ( 1 == BUTTON_CFG_FILTER_EN )
+		p_filter_bool_t		filt;		/**<Boolean filter */
+	#endif
 	pf_button_callback 	pressed;	/**<Button pressed callback */
 	pf_button_callback 	released;	/**<Button released callback */
 
@@ -151,7 +158,6 @@ static button_status_t button_internal_init(void)
 	for ( num = 0; num < eBUTTON_NUM_OF; num++ )
 	{
 		// Init runtime vars
-		g_button[num].filt 			= NULL;
 		g_button[num].pressed		= NULL;
 		g_button[num].released		= NULL;
 		g_button[num].time.active 	= 0.0f;
@@ -159,19 +165,25 @@ static button_status_t button_internal_init(void)
 		g_button[num].state.cur		= eBUTTON_UNKNOWN;
 		g_button[num].state.prev	= eBUTTON_UNKNOWN;
 
-		// Filter enable?
-		if ( true == gp_cfg_table[num].lpf_en )
-		{
-			// Init filter
-			// NOTE: Comparator level set to 0.05 (5%/95%)---> 3*Tao is 95% for RC 1st order filter
-			if ( eFILTER_OK != filter_bool_init( &( g_button[num].filt ), gp_cfg_table[num].lpf_fc, BUTTON_HNDL_FREQ_HZ, 0.05f ))
+		#if ( 1 == BUTTON_CFG_FILTER_EN )
+
+			g_button[num].filt 			= NULL;
+
+			// Filter enable?
+			if ( true == gp_cfg_table[num].lpf_en )
 			{
-				BUTTON_DBG_PRINT( "BUTTON: LPF initialisation error at button number %d!", num );
-				BUTTON_ASSERT( 0 );
-				status = eBUTTON_ERROR_INIT;
-				break;
+				// Init filter
+				// NOTE: Comparator level set to 0.05 (5%/95%)---> 3*Tao is 95% for RC 1st order filter
+				if ( eFILTER_OK != filter_bool_init( &( g_button[num].filt ), gp_cfg_table[num].lpf_fc, BUTTON_HNDL_FREQ_HZ, 0.05f ))
+				{
+					BUTTON_DBG_PRINT( "BUTTON: LPF initialisation error at button number %d!", num );
+					BUTTON_ASSERT( 0 );
+					status = eBUTTON_ERROR_INIT;
+					break;
+				}
 			}
-		}
+
+		#endif
 	}
 
 	return status;
@@ -242,41 +254,44 @@ static button_state_t button_get_low(const button_num_t num)
 static button_state_t button_filter_update(const button_num_t num, const button_state_t state)
 {
 	button_state_t 	state_filt 	= eBUTTON_UNKNOWN;
-	bool			in 			= false;
-	bool			out 		= false;
 
-	// Filter enabled
-	if ( true == gp_cfg_table[num].lpf_en )
-	{
-		// Convert state
-		if ( eBUTTON_ON == state )
+	#if ( 1 == BUTTON_CFG_FILTER_EN )
+		bool in  = false;
+		bool out = false;
+
+		// Filter enabled
+		if ( true == gp_cfg_table[num].lpf_en )
 		{
-			in = true;
+			// Convert state
+			if ( eBUTTON_ON == state )
+			{
+				in = true;
+			}
+			else
+			{
+				in = false;
+			}
+
+			// Update filter
+			filter_bool_update( g_button[num].filt, in, &out );
+
+			// Convert state
+			if ( true == out )
+			{
+				state_filt = eBUTTON_ON;
+			}
+			else
+			{
+				state_filt = eBUTTON_OFF;
+			}
 		}
+
+		// Filter disabled
 		else
+	#endif
 		{
-			in = false;
+			state_filt = state;
 		}
-
-		// Update filter
-		filter_bool_update( g_button[num].filt, in, &out );
-
-		// Convert state
-		if ( true == out )
-		{
-			state_filt = eBUTTON_ON;
-		}
-		else
-		{
-			state_filt = eBUTTON_OFF;
-		}
-	}
-
-	// Filter disabled
-	else
-	{
-		state_filt = state;
-	}
 
 	return state_filt;
 }
@@ -518,60 +533,6 @@ button_status_t button_get_state(const button_num_t num, bool * const p_state)
 
 ////////////////////////////////////////////////////////////////////////////////
 /**
-*   	Change button filter cutoff frequency
-*
-*	@brief	LPF is RC 1st order IIR filter. Output is being compared between
-* 			5% and 95% (3 Tao).
-*
-* 			E.g. LPF with fc=1Hz will result in button detection time delay
-* 			of:
-*
-* 				fc = 1 / ( 2*pi*Tao ) ---> Tao = 1 / ( 2*pi*fc )
-*
-* 				dt = 3 Tao = 3 * 1 / ( 2*pi*fc )
-*
-* 				fc = 1.0 Hz ---> dt = 0.477 sec
-*
-*
-* @param[in]	num		- Button enumeration number
-* @param[in]	fc		- Filter cutoff frequency
-* @return   	status	- Status of operation
-*/
-////////////////////////////////////////////////////////////////////////////////
-button_status_t button_change_filter_fc(const button_num_t num, const float32_t fc)
-{
-	button_status_t status = eBUTTON_OK;
-
-	BUTTON_ASSERT( true == gb_is_init );
-	BUTTON_ASSERT( num < eBUTTON_NUM_OF );
-	BUTTON_ASSERT( true == gp_cfg_table[num].lpf_en );
-
-	if ( true == gb_is_init )
-	{
-		if 	(	( num < eBUTTON_NUM_OF )
-			&& 	( true == gp_cfg_table[num].lpf_en ))
-		{
-			// Change cutoff frequency
-			if ( eFILTER_OK != filter_bool_change_cutoff( g_button[num].filt, fc, BUTTON_HNDL_FREQ_HZ ))
-			{
-				status = eBUTTON_ERROR;
-			}
-		}
-		else
-		{
-			status = eBUTTON_ERROR;
-		}
-	}
-	else
-	{
-		status = eBUTTON_ERROR_INIT;
-	}
-
-	return status;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/**
 *   	Get button timings
 *
 * @param[in]	num				- Button enumeration number
@@ -687,6 +648,64 @@ button_status_t button_unregister_callback(const button_num_t num)
 
 	return status;
 }
+
+#if ( 1 == BUTTON_CFG_FILTER_EN )
+
+	////////////////////////////////////////////////////////////////////////////////
+	/**
+	*   	Change button filter cutoff frequency
+	*
+	*	@brief	LPF is RC 1st order IIR filter. Output is being compared between
+	* 			5% and 95% (3 Tao).
+	*
+	* 			E.g. LPF with fc=1Hz will result in button detection time delay
+	* 			of:
+	*
+	* 				fc = 1 / ( 2*pi*Tao ) ---> Tao = 1 / ( 2*pi*fc )
+	*
+	* 				dt = 3 Tao = 3 * 1 / ( 2*pi*fc )
+	*
+	* 				fc = 1.0 Hz ---> dt = 0.477 sec
+	*
+	*
+	* @param[in]	num		- Button enumeration number
+	* @param[in]	fc		- Filter cutoff frequency
+	* @return   	status	- Status of operation
+	*/
+	////////////////////////////////////////////////////////////////////////////////
+	button_status_t button_change_filter_fc(const button_num_t num, const float32_t fc)
+	{
+		button_status_t status = eBUTTON_OK;
+
+		BUTTON_ASSERT( true == gb_is_init );
+		BUTTON_ASSERT( num < eBUTTON_NUM_OF );
+		BUTTON_ASSERT( true == gp_cfg_table[num].lpf_en );
+
+		if ( true == gb_is_init )
+		{
+			if 	(	( num < eBUTTON_NUM_OF )
+				&& 	( true == gp_cfg_table[num].lpf_en ))
+			{
+				// Change cutoff frequency
+				if ( eFILTER_OK != filter_bool_change_cutoff( g_button[num].filt, fc, BUTTON_HNDL_FREQ_HZ ))
+				{
+					status = eBUTTON_ERROR;
+				}
+			}
+			else
+			{
+				status = eBUTTON_ERROR;
+			}
+		}
+		else
+		{
+			status = eBUTTON_ERROR_INIT;
+		}
+
+		return status;
+	}
+
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 /*!
