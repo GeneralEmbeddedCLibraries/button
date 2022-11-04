@@ -24,7 +24,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <stdint.h>
 #include <stdbool.h>
-#include "project_config.h"
 
 #include "../../button_cfg.h"
 #include "drivers/peripheral/gpio/gpio.h"
@@ -70,6 +69,11 @@ typedef enum
 } button_polarity_t;
 
 /**
+ *  32-bit floating data type definition
+ */
+typedef float float32_t;
+
+/**
  * 	Button configuration
  */
 typedef struct
@@ -84,6 +88,7 @@ typedef struct
  * 	Callback functions
  */
 typedef void(*pf_button_callback)(void);
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions

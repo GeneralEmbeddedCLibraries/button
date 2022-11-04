@@ -176,7 +176,7 @@ static button_status_t button_internal_init(void)
 				// NOTE: Comparator level set to 0.05 (5%/95%)---> 3*Tao is 95% for RC 1st order filter
 				if ( eFILTER_OK != filter_bool_init( &( g_button[num].filt ), gp_cfg_table[num].lpf_fc, BUTTON_HNDL_FREQ_HZ, 0.05f ))
 				{
-					BUTTON_DBG_PRINT( "BUTTON: LPF initialisation error at button number %d!", num );
+					BUTTON_PRINT( "BUTTON: LPF initialisation error at button number %d!", num );
 					BUTTON_ASSERT( 0 );
 					status = eBUTTON_ERROR_INIT;
 					break;
@@ -404,21 +404,21 @@ button_status_t	button_init(void)
 			// Low level drivers not initialised
 			else
 			{
-				BUTTON_DBG_PRINT( "BUTTON: Low level drivers not initialised error!" );
+				BUTTON_PRINT( "BUTTON: Low level drivers not initialised error!" );
 				BUTTON_ASSERT( 0 );
 				status = eBUTTON_ERROR_INIT;
 			}
 		}
 		else
 		{
-			BUTTON_DBG_PRINT( "BUTTON: Low level drivers not initialised error!" );
+			BUTTON_PRINT( "BUTTON: Low level drivers not initialised error!" );
 			BUTTON_ASSERT( 0 );
 			status = eBUTTON_ERROR_INIT;
 		}
 	}
 	else
 	{
-		BUTTON_DBG_PRINT( "BUTTON: Already init ERROR!" );
+		BUTTON_PRINT( "BUTTON: Already init ERROR!" );
 		BUTTON_ASSERT( 0 );
 		status = eBUTTON_ERROR_INIT;
 	}
