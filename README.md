@@ -1,40 +1,33 @@
-# **Button library**
-General C library for button action handling. Library is simple to use as it is configurable by single table. It also features debouncing filtering. 
-
+# **Button**
+Button library takes care of button handling and debouncing if configured to do so. Library is fully configured via configuration table.
 
 ## **Dependencies**
 
 ### **1. GPIO module**
---- 
 Button library is dependend from low level GPIO module thus following function prototypes must be provided:
-  - gpio_status_t gpio_is_init(bool * const p_is_init)
-  - void gpio_set(const gpio_pins_t pin, const gpio_state_t state)
+  - *gpio_status_t gpio_is_init(bool * const p_is_init)*
+  - *void gpio_get(const gpio_pins_t pin)*
 
 GPIO translation unit must be under following project path:
-```C
-#include "drivers/peripheral/gpio/gpio.h"
+```
+"root/drivers/peripheral/gpio/gpio.h"
 ```
 
 ### **2. Filter module**
---- 
-Button library is also dependent from filter module. Filter module sources can be found under this [link](https://github.com/GeneralEmbeddedCLibraries/filter). Filter module must take following path:
+[Filter module](https://github.com/GeneralEmbeddedCLibraries/filter) is not mandatory to be used as it can be disabled via *BUTTON_CFG_FILTER_EN* inside ***button_cfg.h*** file.
 
-```C
-#include "middleware/filter/src/filter.h"
+If Filter module is used, it must take following path:
+```
+"root/middleware/filter/src/filter.h"
 ```
 
-### **3. float32_t definition**
-Definition of float32_t must be provided by user. In current implementation it is defined in "project_config.h". Just add following statement to your code where it suits the best.
-
-```C
-// Define float
-typedef float float32_t;
+## **General Embedded C Libraries Ecosystem**
+In order to be part of *General Embedded C Libraries Ecosystem* this module must be placed in following path: 
 ```
-### **4. Static assert**
-Additionaly module uses "static_assert()" function defined in <assert.h>. It is being used for cross-module compatibility.
+root/drivers/hmi/button/button/"module_space"
+```
 
  ## **API**
----
 | API Functions | Description | Prototype |
 | --- | ----------- | ----- |
 | **button_init** | Initialization of button module | button_status_t button_init(void) |****
@@ -47,12 +40,13 @@ Additionaly module uses "static_assert()" function defined in <assert.h>. It is 
 | **button_unregister_callback** | Un-register button callback | button_status_t button_unregister_callback	(const button_num_t num) |
 
 
-
-
 ## **How to use**
----
 
-1. List all buttons inside **button_cfg.h** file:
+**GENERAL NOTICE: Put all user code between sections: USER CODE BEGIN & USER CODE END!**
+
+1. Copy template files to root directory of module.
+
+2. List all buttons inside **button_cfg.h** file:
 ```C
 /**
  * 	List of Buttons
@@ -79,16 +73,19 @@ typedef enum
 } button_num_t;
 ```
 
-2. Set up main handler period inside **button_cfg.h** file:
-```C
-/**
- * 	Main button handler period
- * 	Unit: sec
- */
-#define BUTTON_CFG_HNDL_PERIOD_S					( 0.01f )
-```
+3. Configure Button module inside **button_cfg.h** file:
 
-3. Set up configuration table inside **button_cfg.c** file:
+| Configuration | Description |
+| --- | --- |
+| **BUTTON_CFG_HNDL_PERIOD_S** 	| Main button handler period in seconds. |
+| **BUTTON_CFG_FILTER_EN** 		| Enable/Disable usage of Filter module. It is being used for debouncing. |
+| **BUTTON_CFG_DEBUG_EN** 		| Enable/Disable debug mode. |
+| **BUTTON_CFG_ASSERT_EN** 		| Enable/Disable assertions. |
+| **BUTTON_PRINT** 			    | Definition of debug printing. |
+| **BUTTON_ASSERT** 			| Definition of assert. |
+
+
+4. Set up configuration table inside **button_cfg.c** file:
 ```C
 /**
  * 	Button configuration table
@@ -125,9 +122,11 @@ static const button_cfg_t g_button_cfg[ eBUTTON_NUM_OF ] =
 };
 ```
 
-4. Include, initialize & handle:
+5. Include, initialize & handle:
 
 Main button handler **button_hndl()** must be called with a fixed period of **BUTTON_CFG_HNDL_PERIOD_S** (defined inside button_cfg.h). 
+
+**NOTICE: Before using Button module GPIO shall be initialized!**
 
 ```C
 // Include single file to your application!
@@ -168,7 +167,7 @@ if ( eBUTTON_OK != button_init())
 }
 ```
 
-5. Register and use callback functions
+6. Register and use callback functions
 ```C
 // Declare callback functions
 static void my_button_pressed(void);
@@ -180,7 +179,7 @@ button_register_callback( eBUTTON_USER, &my_button_pressed, &my_button_released 
 // Define callback functions
 static void my_button_pressed(void)
 {
-    // Put actions on button release event here...
+    // Put actions on button pressed event here...
 }
 
 static void my_button_released(void)

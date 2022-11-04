@@ -1,0 +1,24 @@
+# Changelog
+All notable changes to this project/module will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project/module adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+## V1.1.0 - 04.11.2022
+
+### Changed
+ - Removed Filter dependecy and making configurable
+ - Removed float32_t dependecy
+ - Replace version notes with changelog
+
+
+---
+## V1.0.0 - 30.09.2021
+
+### Added
+ - Configuration via single table
+ - Debounce filtering
+ - Event callbacks on pressed and released event
+ - Active & idle timings measurement
+---
