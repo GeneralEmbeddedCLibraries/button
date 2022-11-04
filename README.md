@@ -1,4 +1,4 @@
-# **Button library**
+# **Button**
 Button library takes care of button handling and debouncing if configured to do so. Library is fully configured via configuration table.
 
 ## **Dependencies**
