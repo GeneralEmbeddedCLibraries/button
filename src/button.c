@@ -34,9 +34,8 @@
 /**
  * 	Check filter module compatibility
  */
-//static_assert( 1 == FILTER_VER_MAJOR );
-//static_assert( 0 == FILTER_VER_MINOR );
-//static_assert( 2 <= FILTER_VER_DEVELOP );
+_Static_assert( 1 == FILTER_VER_MAJOR );
+_Static_assert( 1 == FILTER_VER_MINOR );
 
 /**
  * 	Button handler period
