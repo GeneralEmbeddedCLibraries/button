@@ -501,7 +501,7 @@ button_status_t button_hndl(void)
 * @return   	status	- Status of operation
 */
 ////////////////////////////////////////////////////////////////////////////////
-button_status_t button_get_state(const button_num_t num, bool * const p_state)
+button_status_t button_get_state(const button_num_t num, button_state_t * const p_state)
 {
 	button_status_t status = eBUTTON_OK;
 
