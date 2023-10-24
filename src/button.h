@@ -26,7 +26,7 @@
 #include <stdbool.h>
 
 #include "../../button_cfg.h"
-#include "drivers/peripheral/gpio/gpio.h"
+#include "drivers/peripheral/gpio/gpio/src/gpio.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Definitions
@@ -78,7 +78,7 @@ typedef float float32_t;
  */
 typedef struct
 {
-	gpio_pins_t 		gpio_pin;		/**<GPIO pin */
+	gpio_pin_t          gpio_pin;		/**<GPIO pin */
 	button_polarity_t	polarity;		/**<Polarity */
 	bool				lpf_en;			/**<Enable LPF */
 	float32_t			lpf_fc;			/**<Low pass filter cutoff freq */

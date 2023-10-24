@@ -24,7 +24,7 @@
 #include <assert.h>
 
 #include "button.h"
-#include "drivers/peripheral/gpio/gpio.h"
+#include "drivers/peripheral/gpio/gpio/src/gpio.h"
 
 #if ( 1 == BUTTON_CFG_FILTER_EN )
 	#include "middleware/filter/src/filter.h"
@@ -203,7 +203,7 @@ static button_state_t button_get_low(const button_num_t num)
 	gpio_state_t	gpio_state	= eGPIO_UKNOWN;
 
 	// Get gpio state
-	gpio_state = gpio_get( gp_cfg_table[num].gpio_pin );
+	(void) gpio_get( gp_cfg_table[num].gpio_pin, &gpio_state );
 
 	// Active high polarity
 	if ( eBUTTON_POL_ACTIVE_HIGH == gp_cfg_table[num].polarity )
