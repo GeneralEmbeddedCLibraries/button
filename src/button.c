@@ -474,11 +474,11 @@ button_status_t button_hndl(void)
 			// Apply filter
 			g_button[num].state.cur = button_filter_update( num, state );
 
-			// Manage timings
-			button_manage_timings( num, g_button[num].state.cur );
-
 			// Manage callbacks
 			button_raise_callback( num, g_button[num].state.cur, g_button[num].state.prev );
+
+			// Manage timings
+			button_manage_timings( num, g_button[num].state.cur );
 
 			// Store current state
 			g_button[num].state.prev = g_button[num].state.cur;
