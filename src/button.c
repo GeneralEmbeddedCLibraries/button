@@ -35,11 +35,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #if ( 1 == BUTTON_CFG_FILTER_EN )
-	/**
-	 * 	Check filter module compatibility
-	 */
-	_Static_assert( 1 == FILTER_VER_MAJOR );
-	_Static_assert( 1 == FILTER_VER_MINOR );
+
+    /**
+     *  Compatibility check with Filter module
+     *
+     *  Support version V2.x.x
+     */
+    _Static_assert( 2 == FILTER_VER_MAJOR );
+
 #endif
 
 /**
@@ -278,7 +281,7 @@ static button_state_t button_filter_update(const button_num_t num, const button_
 			}
 
 			// Update filter
-			filter_bool_update( g_button[num].filt, in, &out );
+			(void) filter_bool_hndl( g_button[num].filt, in, &out );
 
 			// Convert state
 			if ( true == out )
@@ -751,6 +754,37 @@ button_status_t button_unregister_callback(const button_num_t num)
 }
 
 #if ( 1 == BUTTON_CFG_FILTER_EN )
+
+    button_status_t button_reset_filter(const button_num_t num)
+    {
+    	button_status_t status = eBUTTON_OK;
+
+    	BUTTON_ASSERT( true == gb_is_init );
+    	BUTTON_ASSERT( num < eBUTTON_NUM_OF );
+
+    	if ( true == gb_is_init )
+    	{
+    		if ( num < eBUTTON_NUM_OF )
+    		{
+                // Reset filter
+                if ( eFILTER_OK != filter_bool_reset( g_button[num].filt ))
+                {
+                    status = eBUTTON_ERROR;
+                }
+    		}
+    		else
+    		{
+    			status = eBUTTON_ERROR;
+    		}
+    	}
+    	else
+    	{
+    		status = eBUTTON_ERROR_INIT;
+    	}
+
+    	return status;      
+    }
+
 
 	////////////////////////////////////////////////////////////////////////////////
 	/**

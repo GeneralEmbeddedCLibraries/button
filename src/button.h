@@ -104,6 +104,7 @@ button_status_t button_register_callback	(const button_num_t num, pf_button_call
 button_status_t button_unregister_callback	(const button_num_t num);
 
 #if ( 1 == BUTTON_CFG_FILTER_EN )
+    button_status_t button_reset_filter         (const button_num_t num);
 	button_status_t button_change_filter_fc		(const button_num_t num, const float32_t fc);
 #endif
 
