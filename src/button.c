@@ -83,6 +83,8 @@ typedef struct
 		button_state_t	cur;		/**<Current button state */
 		button_state_t	prev;		/**<Previous button state */
 	} state;
+    
+    bool enable;                    /**<Button enable switch */
 
 } button_data_t;
 
@@ -164,6 +166,9 @@ static button_status_t button_internal_init(void)
 		g_button[num].time.idle	 	= 0.0f;
 		g_button[num].state.cur		= eBUTTON_UNKNOWN;
 		g_button[num].state.prev	= eBUTTON_UNKNOWN;
+
+        // Enable all buttons by default
+		g_button[num].enable = true;
 
 		#if ( 1 == BUTTON_CFG_FILTER_EN )
 
@@ -300,6 +305,8 @@ static button_state_t button_filter_update(const button_num_t num, const button_
 /**
 *   	Manage button callbacks
 *
+* @note     If button is disabled, callbacks will not be triggered!
+*
 * @param[in]	num			- Button enumeration number
 * @param[in]	state_cur	- Current state of button
 * @param[in]	state_prev	- Previous state of button
@@ -308,24 +315,30 @@ static button_state_t button_filter_update(const button_num_t num, const button_
 ////////////////////////////////////////////////////////////////////////////////
 static void	button_raise_callback(const button_num_t num, const button_state_t state_cur, button_state_t state_prev)
 {
-	if 	(	( NULL != g_button[num].pressed )
-		&& 	( eBUTTON_ON  == state_cur )
-		&& 	( eBUTTON_OFF == state_prev ))
-	{
-		g_button[num].pressed();
-	}
+    // Is button enabled
+    if ( true == g_button[num].enable )
+    {
+    	if 	(	( NULL != g_button[num].pressed )
+    		&& 	( eBUTTON_ON  == state_cur )
+    		&& 	( eBUTTON_OFF == state_prev ))
+    	{
+    		g_button[num].pressed();
+    	}
 
-	if 	(	( NULL != g_button[num].released )
-		&& 	( eBUTTON_OFF == state_cur )
-		&& 	( eBUTTON_ON  == state_prev ))
-	{
-		g_button[num].released();
-	}
+    	if 	(	( NULL != g_button[num].released )
+    		&& 	( eBUTTON_OFF == state_cur )
+    		&& 	( eBUTTON_ON  == state_prev ))
+    	{
+    		g_button[num].released();
+    	}
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 /**
 *   	Manage button timings
+*
+* @note     If button is disabled, timings will resets!
 *
 * @param[in]	num		- Button enumeration number
 * @param[in]	state	- Current state of button
@@ -334,23 +347,32 @@ static void	button_raise_callback(const button_num_t num, const button_state_t s
 ////////////////////////////////////////////////////////////////////////////////
 static void	button_manage_timings(const button_num_t num, const button_state_t state)
 {
-	if ( eBUTTON_ON == state )
-	{
-		g_button[num].time.idle 	= 0.0f;
-		g_button[num].time.active 	+= BUTTON_HNDL_PERIOD_S;
-		g_button[num].time.active 	= BUTTON_LIM_TIME( g_button[num].time.active );
-	}
-	else if ( eBUTTON_OFF == state )
-	{
-		g_button[num].time.active 	= 0.0f;
-		g_button[num].time.idle 	+= BUTTON_HNDL_PERIOD_S;
-		g_button[num].time.idle 	= BUTTON_LIM_TIME( g_button[num].time.idle );
-	}
-	else
-	{
-		g_button[num].time.active 	= 0.0f;
-		g_button[num].time.idle 	= 0.0f;
-	}
+    // Is button enabled
+    if ( true == g_button[num].enable )
+    { 
+    	if ( eBUTTON_ON == state )
+    	{
+    		g_button[num].time.idle 	= 0.0f;
+    		g_button[num].time.active 	+= BUTTON_HNDL_PERIOD_S;
+    		g_button[num].time.active 	= BUTTON_LIM_TIME( g_button[num].time.active );
+    	}
+    	else if ( eBUTTON_OFF == state )
+    	{
+    		g_button[num].time.active 	= 0.0f;
+    		g_button[num].time.idle 	+= BUTTON_HNDL_PERIOD_S;
+    		g_button[num].time.idle 	= BUTTON_LIM_TIME( g_button[num].time.idle );
+    	}
+    	else
+    	{
+    		g_button[num].time.active 	= 0.0f;
+    		g_button[num].time.idle 	= 0.0f;
+    	}
+    }
+    else
+    {
+        g_button[num].time.active 	= 0.0f;
+        g_button[num].time.idle 	= 0.0f;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -496,6 +518,8 @@ button_status_t button_hndl(void)
 /**
 *   	Get current button state
 *
+* @note In case button is disabled, "eBUTTON_UNKNOWN" is returned!
+*
 * @param[in]	num		- Button enumeration number
 * @param[out]	p_state	- Pointer to current button state
 * @return   	status	- Status of operation
@@ -511,15 +535,22 @@ button_status_t button_get_state(const button_num_t num, button_state_t * const 
 
 	if ( true == gb_is_init )
 	{
-		if 	(	( num < eBUTTON_NUM_OF )
-			&& 	( NULL != p_state ))
-		{
-			*p_state = g_button[num].state.cur;
-		}
-		else
-		{
-			status = eBUTTON_ERROR;
-		}
+        if ( true == g_button[num].enable )
+        {
+    		if 	(	( num < eBUTTON_NUM_OF )
+    			&& 	( NULL != p_state ))
+    		{
+    			*p_state = g_button[num].state.cur;
+    		}
+    		else
+    		{
+    			status = eBUTTON_ERROR;
+    		}
+        }
+        else
+        {
+            *p_state = eBUTTON_UNKNOWN;     
+        }
 	}
 	else
 	{
@@ -571,6 +602,78 @@ button_status_t button_get_time(const button_num_t num, float32_t * const p_acti
 	}
 
 	return status;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/**
+*   	Enable/Disable button reading
+*
+* @param[in]	num		- Button enumeration number
+* @param[in]	enable  - Enable/Disable button reading
+* @return   	status  - Status of operation
+*/
+////////////////////////////////////////////////////////////////////////////////
+button_status_t button_set_enable(const button_num_t num, const bool enable)
+{
+	button_status_t status = eBUTTON_OK;
+
+	BUTTON_ASSERT( true == gb_is_init );
+	BUTTON_ASSERT( num < eBUTTON_NUM_OF );
+
+	if ( true == gb_is_init )
+	{
+		if ( num < eBUTTON_NUM_OF )
+		{
+            g_button[num].enable = enable;
+		}
+		else
+		{
+			status = eBUTTON_ERROR;
+		}
+	}
+	else
+	{
+		status = eBUTTON_ERROR_INIT;
+	}
+
+	return status;    
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/**
+*   	Get enable button state
+*
+* @param[in]	num         - Button enumeration number
+* @param[out]	p_enable    - State of enable button switch
+* @return   	status      - Status of operation
+*/
+////////////////////////////////////////////////////////////////////////////////
+button_status_t button_get_enable(const button_num_t num, bool * const p_enable)
+{
+	button_status_t status = eBUTTON_OK;
+
+	BUTTON_ASSERT( true == gb_is_init );
+	BUTTON_ASSERT( num < eBUTTON_NUM_OF );
+	BUTTON_ASSERT( NULL != p_enable );
+
+	if ( true == gb_is_init )
+	{
+		if  (   ( num < eBUTTON_NUM_OF )
+            &&  ( NULL != p_enable ))
+		{
+            *p_enable = g_button[num].enable;
+		}
+		else
+		{
+			status = eBUTTON_ERROR;
+		}
+	}
+	else
+	{
+		status = eBUTTON_ERROR_INIT;
+	}
+
+	return status;    
 }
 
 ////////////////////////////////////////////////////////////////////////////////
