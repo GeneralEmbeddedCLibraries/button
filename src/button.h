@@ -26,7 +26,7 @@
 #include <stdbool.h>
 
 #include "../../button_cfg.h"
-#include "drivers/peripheral/gpio/gpio.h"
+#include "drivers/peripheral/gpio/gpio/src/gpio.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Definitions
@@ -78,7 +78,7 @@ typedef float float32_t;
  */
 typedef struct
 {
-	gpio_pins_t 		gpio_pin;		/**<GPIO pin */
+	gpio_pin_t          gpio_pin;		/**<GPIO pin */
 	button_polarity_t	polarity;		/**<Polarity */
 	bool				lpf_en;			/**<Enable LPF */
 	float32_t			lpf_fc;			/**<Low pass filter cutoff freq */
@@ -98,10 +98,13 @@ button_status_t button_is_init				(bool * const p_is_init);
 button_status_t button_hndl                 (void);
 button_status_t button_get_state            (const button_num_t num, button_state_t * const p_state);
 button_status_t button_get_time				(const button_num_t num, float32_t * const p_active_time, float32_t * const p_idle_time);
+button_status_t button_set_enable           (const button_num_t num, const bool enable);
+button_status_t button_get_enable           (const button_num_t num, bool * const p_enable);
 button_status_t button_register_callback	(const button_num_t num, pf_button_callback pf_pressed, pf_button_callback pf_released);
 button_status_t button_unregister_callback	(const button_num_t num);
 
 #if ( 1 == BUTTON_CFG_FILTER_EN )
+    button_status_t button_reset_filter         (const button_num_t num);
 	button_status_t button_change_filter_fc		(const button_num_t num, const float32_t fc);
 #endif
 
