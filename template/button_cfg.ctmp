@@ -55,7 +55,6 @@ static const button_cfg_t g_button_cfg[ eBUTTON_NUM_OF ] =
     // ---------------------------------------------------------------------------------------------------------------------------------------
     [eBUTTON_USER]   = {     .gpio_pin = eGPIO_BTN,    .polarity = eBUTTON_POL_ACTIVE_LOW,     .lpf_en = true,    .lpf_fc = 10.0f          },
 
-
 	// USER CODE END...
 
 };
@@ -71,7 +70,7 @@ static const button_cfg_t g_button_cfg[ eBUTTON_NUM_OF ] =
 * @return		pointer to configuration table
 */
 ////////////////////////////////////////////////////////////////////////////////
-const void * button_cfg_get_table(void)
+const button_cfg_t * button_cfg_get_table(void)
 {
 	return (button_cfg_t*) &g_button_cfg;
 }

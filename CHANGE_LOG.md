@@ -13,6 +13,9 @@ and this project/module adheres to [Semantic Versioning](https://semver.org/spec
 ### Changed
  - Fixing gpio definition to be compatible with proper GPIO module
 
+### Todo
+ - Callback registration for long/short/custom time presses or sequences (issue #2)
+
 ---
 ## V1.1.0 - 04.11.2022
 
