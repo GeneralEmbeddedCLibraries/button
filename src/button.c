@@ -35,6 +35,14 @@
 // Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *  Compatibility check with GPIO module
+ *
+ *  Support version V0.1.x
+ */
+_Static_assert( 0 == GPIO_VER_MAJOR );
+_Static_assert( 1 >= GPIO_VER_MINOR );
+
 #if ( 1 == BUTTON_CFG_FILTER_EN )
 
     /**
@@ -262,6 +270,11 @@ static button_state_t button_get_low(const button_num_t num)
 static button_state_t button_filter_update(const button_num_t num, const button_state_t state)
 {
     button_state_t state_filt = eBUTTON_UNKNOWN;
+
+    #if ( 0 == BUTTON_CFG_FILTER_EN )
+        // Unused param
+        (void) num;
+    #endif
 
     #if ( 1 == BUTTON_CFG_FILTER_EN )
         bool in  = false;
