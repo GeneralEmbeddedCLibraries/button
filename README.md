@@ -3,7 +3,7 @@ Button module provides a robust set of functionalities tailored for reading butt
 
 By incorporating callback functions, this library offers a convenient way for developers to implement specific actions or responses in the embedded system when a button is pressed or released. 
 
-Main purpose of module is to read button inputs, but it can be used for misc digital input signal handling. For example reading faults signals from external sensor health. 
+Main purpose of module is to read button inputs, but it can be used for misc digital input signal handling. For example reading faults signals from external sensor. 
 
 ## **Dependencies**
 
@@ -42,10 +42,11 @@ root/drivers/hmi/button/button/"module_space"
 | **button_hndl**                   | Main button handler                       | button_status_t button_hndl(void) |
 | **button_get_state**              | Get button state                          | button_status_t button_get_state(const button_num_t num, bool * const p_state) |
 | **button_change_filter_fc**       | Change button cutoff frequency of filter  | button_status_t button_change_filter_fc(const button_num_t num, const float32_t fc) |
-| **button_get_time**               | Get button timings                        | button_status_t button_get_time(const button_num_t num, float32_t * const p_active_time, float32_t * const p_idle_time)|
+| **button_get_time**               | Get button timings                        | button_status_t button_get_time(const button_num_t num, float32_t * const p_active_time, float32_t * const p_idle_time) |
+| **button_set_enable**             | Set button enable switch                  | button_status_t button_set_enable(const button_num_t num, const bool enable) |
+| **button_get_enable**             | Get button enable switch                  | button_status_t button_get_enable(const button_num_t num, bool * const p_enable) |
 | **button_register_callback**      | Register button callback                  | button_status_t button_register_callback(const button_num_t num, pf_button_callback pf_pressed, pf_button_callback pf_released) |
 | **button_unregister_callback**    | Un-register button callback               | button_status_t button_unregister_callback(const button_num_t num) |
-
 
 ## **How to use**
 
