@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project/module adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
-## V1.2.0 - xx.xx.2023
+## V1.2.0 - 08.11.2023
 
 ### Added
  - Option to disable button reading

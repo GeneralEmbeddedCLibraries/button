@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ziga Miklosic
+// Copyright (c) 2023 Ziga Miklosic
 // All Rights Reserved
 // This software is under MIT licence (https://opensource.org/licenses/MIT)
 ////////////////////////////////////////////////////////////////////////////////
@@ -6,8 +6,9 @@
 * @file     button_cfg.h
 * @brief    Button configurations
 * @author   Ziga Miklosic
-* @date     04.11.2022
-* @version	V1.1.0
+* @email    ziga.miklosic@gmail.com
+* @date     08.11.2023
+* @version	V1.2.0
 */
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -33,10 +34,10 @@
 
 // USER CODE BEGIN...
 
-//#include "project_config.h"
+#include "config/proj_cfg.h"
 
 // Debug communication port
-//#include "middleware/cli/cli/src/cli.h"
+#include "middleware/cli/cli/src/cli.h"
 
 // USER CODE END...
 
@@ -59,7 +60,7 @@ typedef enum
 {
 	// USER CODE START...
 
-	eBUTTON_USER = 0,
+    eBUTTON_USER = 0,
 
 	// USER CODE END...
 
@@ -73,12 +74,12 @@ typedef enum
  * 	Main button handler period
  * 	Unit: sec
  */
-#define BUTTON_CFG_HNDL_PERIOD_S				( 0.01f )
+#define BUTTON_CFG_HNDL_PERIOD_S				( PROJ_CFG_HMI_PERIOD_S )
 
 /**
  * 	Enable/Disable usage of Filter module. It is being used for debouncing.
  */
-#define BUTTON_CFG_FILTER_EN					( 0 )
+#define BUTTON_CFG_FILTER_EN					( 1 )
 
 /**
  * 	Enable/Disable debug mode
@@ -116,7 +117,7 @@ typedef enum
  * 	 Assertion macros
  */
 #if ( 1 == BUTTON_CFG_ASSERT_EN )
-	#define BUTTON_ASSERT(x)					PROJECT_CONFIG_ASSERT(x)
+	#define BUTTON_ASSERT(x)					PROJ_CFG_ASSERT(x)
 #else
 	#define BUTTON_ASSERT(x)					{ ; }
 #endif
@@ -130,6 +131,7 @@ typedef enum
 const void * button_cfg_get_table(void);
 
 #endif // __BUTTON_CFG_H_
+
 ////////////////////////////////////////////////////////////////////////////////
 /**
 * @} <!-- END GROUP -->

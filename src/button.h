@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ziga Miklosic
+// Copyright (c) 2023 Ziga Miklosic
 // All Rights Reserved
 // This software is under MIT licence (https://opensource.org/licenses/MIT)
 ////////////////////////////////////////////////////////////////////////////////
@@ -6,8 +6,9 @@
 * @file     button.h
 * @brief    Button manipulations
 * @author   Ziga Miklosic
-* @date     04.11.2022
-* @version	V1.1.0
+* @email    ziga.miklosic@gmail.com
+* @date     08.11.2023
+* @version	V1.2.0
 */
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -15,7 +16,6 @@
 * @{ <!-- BEGIN GROUP -->
 */
 ////////////////////////////////////////////////////////////////////////////////
-
 #ifndef __BUTTON_H_
 #define __BUTTON_H_
 
@@ -36,7 +36,7 @@
  * 	Module version
  */
 #define BUTTON_VER_MAJOR		( 1 )
-#define BUTTON_VER_MINOR		( 1 )
+#define BUTTON_VER_MINOR		( 2 )
 #define BUTTON_VER_DEVELOP		( 0 )
 
 /**
@@ -44,9 +44,9 @@
  */
 typedef enum
 {
-	eBUTTON_OK 			= 0,		/**<Normal operation */
-	eBUTTON_ERROR_INIT 	= 0x01,		/**<Initialization error */
-	eBUTTON_ERROR		= 0x02,		/**<General error */
+	eBUTTON_OK 			= 0x00U,	/**<Normal operation */
+	eBUTTON_ERROR_INIT 	= 0x01U,	/**<Initialization error */
+	eBUTTON_ERROR		= 0x02U,    /**<General error */
 } button_status_t;
 
 /**
@@ -54,9 +54,9 @@ typedef enum
  */
 typedef enum
 {
-    eBUTTON_OFF 	= 0,		/**<Button idle - not pressed */
-	eBUTTON_ON,					/**<Button pressed */
-	eBUTTON_UNKNOWN,			/**<During startup */
+    eBUTTON_OFF = 0,    /**<Button idle - not pressed */
+	eBUTTON_ON,			/**<Button pressed */
+	eBUTTON_UNKNOWN,	/**<During startup */
 } button_state_t;
 
 /**
@@ -109,6 +109,7 @@ button_status_t button_unregister_callback	(const button_num_t num);
 #endif
 
 #endif // __BUTTON_H_
+
 ////////////////////////////////////////////////////////////////////////////////
 /**
 * @} <!-- END GROUP -->

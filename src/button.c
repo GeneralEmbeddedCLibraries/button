@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ziga Miklosic
+// Copyright (c) 2023 Ziga Miklosic
 // All Rights Reserved
 // This software is under MIT licence (https://opensource.org/licenses/MIT)
 ////////////////////////////////////////////////////////////////////////////////
@@ -6,8 +6,9 @@
 * @file     button.h
 * @brief    Button manipulations
 * @author   Ziga Miklosic
-* @date     04.11.2022
-* @version	V1.1.0
+* @email    ziga.miklosic@gmail.com
+* @date     08.11.2023
+* @version	V1.2.0
 */
 ////////////////////////////////////////////////////////////////////////////////
 /**
