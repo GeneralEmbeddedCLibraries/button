@@ -1,5 +1,9 @@
 # **Button**
-Button library takes care of button handling and debouncing if configured to do so. Library is fully configured via configuration table.
+Button module provides a robust set of functionalities tailored for reading button/digital inputs, with an option for debouncing filtering, based on user configuration. One of its key features is the flexibility to configure the polarity of each button, accommodating both active high and low states, ensuring adaptability across various hardware setups. With this library, developers can easily interface with buttons, handle debouncing if required, and manage different polarities, simplifying the integration of button functionalities into embedded systems, fostering smoother and more reliable user interactions.
+
+By incorporating callback functions, this library offers a convenient way for developers to implement specific actions or responses in the embedded system when a button is pressed or released. 
+
+Main purpose of module is to read button inputs, but it can be used for misc digital input signal handling. For example reading faults signals from external sensor health. 
 
 ## **Dependencies**
 
