@@ -8,7 +8,7 @@
 * @author   Ziga Miklosic
 * @email    ziga.miklosic@gmail.com
 * @date     08.11.2023
-* @version	V1.2.0
+* @version  V1.2.0
 */
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -16,10 +16,10 @@
 * @{ <!-- BEGIN GROUP -->
 *
 *
-* 	Configuration for Button
+*     Configuration for Button
 *
-* 	User shall put code inside inside code block start with
-* 	"USER_CODE_BEGIN" and with end of "USER_CODE_END".
+*     User shall put code inside inside code block start with
+*     "USER_CODE_BEGIN" and with end of "USER_CODE_END".
 *
 */
 ////////////////////////////////////////////////////////////////////////////////
@@ -48,19 +48,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * 	List of Buttons
+ *     List of Buttons
  *
- * @note 	User shall provide Button name here as it would be using
- * 			later inside code.
+ * @note     User shall provide Button name here as it would be using
+ *             later inside code.
  *
- * 			Shall always start with 0.
+ *             Shall always start with 0.
  *
- * @note 	User shall change code only inside section of "USER_CODE_BEGIN"
- * 			ans "USER_CODE_END".
+ * @note     User shall change code only inside section of "USER_CODE_BEGIN"
+ *             ans "USER_CODE_END".
  */
 typedef enum
 {
-	// USER CODE START...
+    // USER CODE START...
 
     // End-Switches for position detection
     eBUTTON_BUCKET_HOME_SW = 0,     /**<Bucket at home position switch */
@@ -71,64 +71,64 @@ typedef enum
     eBUTTON_DELIVERY_FAULT,         /**<Delivery power stage (MPS) fault */
     eBUTTON_SLIDER_FAULT,           /**<Bridge power stage (MPS) fault */
 
-	// USER CODE END...
+    // USER CODE END...
 
-	eBUTTON_NUM_OF
+    eBUTTON_NUM_OF
 } button_num_t;
 
 
 // USER CODE BEGIN...
 
 /**
- * 	Main button handler period
- * 	Unit: sec
+ *     Main button handler period
+ *     Unit: sec
  */
-#define BUTTON_CFG_HNDL_PERIOD_S				( 0.01f )
+#define BUTTON_CFG_HNDL_PERIOD_S            ( 0.01f )
 
 /**
- * 	Enable/Disable usage of Filter module. It is being used for debouncing.
+ *     Enable/Disable usage of Filter module. It is being used for debouncing.
  */
-#define BUTTON_CFG_FILTER_EN					( 1 )
+#define BUTTON_CFG_FILTER_EN                ( 1 )
 
 /**
- * 	Enable/Disable debug mode
+ *     Enable/Disable debug mode
  *
- * 	@note Disabled in release!
+ *     @note Disabled in release!
  */
-#define BUTTON_CFG_DEBUG_EN						( 0 )
+#define BUTTON_CFG_DEBUG_EN                 ( 0 )
 #ifndef DEBUG
-	#undef BUTTON_CFG_DEBUG_EN
-	#define BUTTON_CFG_DEBUG_EN	( 0 )
+    #undef BUTTON_CFG_DEBUG_EN
+    #define BUTTON_CFG_DEBUG_EN    ( 0 )
 #endif
 
 /**
- * 	Enable/Disable assertions
+ *     Enable/Disable assertions
  *
- * 	@note Disabled in release!
+ *     @note Disabled in release!
  */
-#define BUTTON_CFG_ASSERT_EN					( 0 )
+#define BUTTON_CFG_ASSERT_EN                ( 0 )
 #ifndef DEBUG
-	#undef BUTTON_CFG_ASSERT_EN
-	#define BUTTON_CFG_ASSERT_EN	( 0 )
+    #undef BUTTON_CFG_ASSERT_EN
+    #define BUTTON_CFG_ASSERT_EN    ( 0 )
 #endif
 
 /**
- * 	Debug communication port macros
+ *     Debug communication port macros
  */
 #if ( 1 == BUTTON_CFG_DEBUG_EN )
-	#define BUTTON_PRINT( ... )				( cli_printf( __VA_ARGS__ ))
+    #define BUTTON_PRINT( ... )             ( cli_printf( __VA_ARGS__ ))
 #else
-	#define BUTTON_PRINT( ... )				{ ; }
+    #define BUTTON_PRINT( ... )             { ; }
 
 #endif
 
 /**
- * 	 Assertion macros
+ *      Assertion macros
  */
 #if ( 1 == BUTTON_CFG_ASSERT_EN )
-	#define BUTTON_ASSERT(x)					PROJ_CFG_ASSERT(x)
+    #define BUTTON_ASSERT(x)                PROJ_CFG_ASSERT(x)
 #else
-	#define BUTTON_ASSERT(x)					{ ; }
+    #define BUTTON_ASSERT(x)                { ; }
 #endif
 
 // USER CODE END...
