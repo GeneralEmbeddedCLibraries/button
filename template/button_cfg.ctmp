@@ -51,9 +51,13 @@ static const button_cfg_t g_button_cfg[ eBUTTON_NUM_OF ] =
 	// USER CODE BEGIN...
 
     // ---------------------------------------------------------------------------------------------------------------------------------------
-    //                      Gpio pin                    Button polarity                         LPF enable          Default LPF fc
+    //                                  Gpio pin                    Button polarity                         LPF enable          Default LPF fc
     // ---------------------------------------------------------------------------------------------------------------------------------------
-    [eBUTTON_USER]   = {     .gpio_pin = eGPIO_BTN,    .polarity = eBUTTON_POL_ACTIVE_LOW,     .lpf_en = true,    .lpf_fc = 10.0f          },
+    [eBUTTON_BUCKET_HOME_SW]   = {      .gpio_pin = eGPIO_END_SW_BUCKET_HOME,    .polarity = eBUTTON_POL_ACTIVE_HIGH,     .lpf_en = true,    .lpf_fc = 10.0f          },
+    [eBUTTON_DELIVERY_OPEN_SW]   = {      .gpio_pin = eGPIO_END_SW_DELIVERY_OPEN,    .polarity = eBUTTON_POL_ACTIVE_HIGH,     .lpf_en = true,    .lpf_fc = 10.0f          },
+    [eBUTTON_DELIVERY_CLOSE_SW]   = {      .gpio_pin = eGPIO_END_SW_DELIVERY_CLOSE,    .polarity = eBUTTON_POL_ACTIVE_HIGH,     .lpf_en = true,    .lpf_fc = 10.0f          },
+    [eBUTTON_DELIVERY_FAULT]   = {      .gpio_pin = eGPIO_DELIVERY_BRIDGE_FAULT,    .polarity = eBUTTON_POL_ACTIVE_HIGH,     .lpf_en = true,    .lpf_fc = 10.0f          },
+    [eBUTTON_SLIDER_FAULT]   = {      .gpio_pin = eGPIO_SLIDER_BRIDGE_FAULT,    .polarity = eBUTTON_POL_ACTIVE_HIGH,     .lpf_en = true,    .lpf_fc = 10.0f          },
 
 	// USER CODE END...
 

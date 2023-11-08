@@ -62,7 +62,14 @@ typedef enum
 {
 	// USER CODE START...
 
-    eBUTTON_USER = 0,
+    // End-Switches for position detection
+    eBUTTON_BUCKET_HOME_SW = 0,     /**<Bucket at home position switch */
+    eBUTTON_DELIVERY_OPEN_SW,       /**<Delivery door open switch */
+    eBUTTON_DELIVERY_CLOSE_SW,      /**<Delivery door close switch */
+
+    // Motor driver digital status line debouncing
+    eBUTTON_DELIVERY_FAULT,         /**<Delivery power stage (MPS) fault */
+    eBUTTON_SLIDER_FAULT,           /**<Bridge power stage (MPS) fault */
 
 	// USER CODE END...
 
@@ -76,7 +83,7 @@ typedef enum
  * 	Main button handler period
  * 	Unit: sec
  */
-#define BUTTON_CFG_HNDL_PERIOD_S				( PROJ_CFG_HMI_PERIOD_S )
+#define BUTTON_CFG_HNDL_PERIOD_S				( 0.01f )
 
 /**
  * 	Enable/Disable usage of Filter module. It is being used for debouncing.
