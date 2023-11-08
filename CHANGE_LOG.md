@@ -9,9 +9,11 @@ and this project/module adheres to [Semantic Versioning](https://semver.org/spec
 
 ### Added
  - Option to disable button reading
+ - Added de-initialization API function
 
 ### Changed
  - Fixing gpio definition to be compatible with proper GPIO module
+ - Multiple init call does not return error state, as it has no impact if already initialized
 
 ### Todo
  - Callback registration for long/short/custom time presses or sequences (issue #2)
