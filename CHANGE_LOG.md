@@ -14,6 +14,7 @@ and this project/module adheres to [Semantic Versioning](https://semver.org/spec
 ### Changed
  - Fixing gpio definition to be compatible with proper GPIO module
  - Multiple init call does not return error state, as it has no impact if already initialized
+ - Replacing file formating (spaces instead of tabs)
 
 ### Todo
  - Callback registration for long/short/custom time presses or sequences (issue #2)
