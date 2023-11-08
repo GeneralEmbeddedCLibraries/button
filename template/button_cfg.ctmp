@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ziga Miklosic
+// Copyright (c) 2023 Ziga Miklosic
 // All Rights Reserved
 // This software is under MIT licence (https://opensource.org/licenses/MIT)
 ////////////////////////////////////////////////////////////////////////////////
@@ -6,8 +6,9 @@
 * @file     button_cfg.c
 * @brief    Button configurations
 * @author   Ziga Miklosic
-* @date     04.11.2022
-* @version	V1.1.0
+* @email    ziga.miklosic@gmail.com
+* @date     08.11.2023
+* @version  V1.2.0
 */
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -27,36 +28,34 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * 	Button configuration table
+ *     Button configuration table
  *
- * 	@brief	LPF is RC 1st order IIR filter. Output is being compared between
- * 			5% and 95% (3 Tao).
+ *  @brief  LPF is RC 1st order IIR filter. Output is being compared between
+ *          5% and 95% (3 Tao).
  *
- * 			E.g. LPF with fc=1Hz will result in button detection time delay
- * 			of:
+ *          E.g. LPF with fc=1Hz will result in button detection time delay
+ *          of:
  *
- * 				fc = 1 / ( 2*pi*Tao ) ---> Tao = 1 / ( 2*pi*fc )
+ *                 fc = 1 / ( 2*pi*Tao ) ---> Tao = 1 / ( 2*pi*fc )
  *
- * 				dt = 3 Tao = 3 * 1 / ( 2*pi*fc )
+ *                 dt = 3 Tao = 3 * 1 / ( 2*pi*fc )
  *
- * 				fc = 1.0 Hz ---> dt = 0.477 sec
- *
- *
- * 	@note 	Low level gpio code must be compatible!
+ *                 fc = 1.0 Hz ---> dt = 0.477 sec
  */
 static const button_cfg_t g_button_cfg[ eBUTTON_NUM_OF ] =
 {
+    // USER CODE BEGIN...
 
-	// USER CODE BEGIN...
+    // -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //                              Gpio pin enumeration                        Button polarity                         LPF enable          Default LPF fc
+    // -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+    [eBUTTON_BUCKET_HOME_SW]    = {	.gpio_pin = eGPIO_END_SW_BUCKET_HOME,   	.polarity = eBUTTON_POL_ACTIVE_HIGH,	.lpf_en = true,    .lpf_fc = 10.0f          },
+    [eBUTTON_DELIVERY_OPEN_SW]  = {	.gpio_pin = eGPIO_END_SW_DELIVERY_OPEN, 	.polarity = eBUTTON_POL_ACTIVE_HIGH,	.lpf_en = true,    .lpf_fc = 10.0f          },
+    [eBUTTON_DELIVERY_CLOSE_SW] = {	.gpio_pin = eGPIO_END_SW_DELIVERY_CLOSE,	.polarity = eBUTTON_POL_ACTIVE_HIGH,	.lpf_en = true,    .lpf_fc = 10.0f          },
+    [eBUTTON_DELIVERY_FAULT]    = {	.gpio_pin = eGPIO_DELIVERY_BRIDGE_FAULT,	.polarity = eBUTTON_POL_ACTIVE_HIGH,	.lpf_en = true,    .lpf_fc = 10.0f          },
+    [eBUTTON_SLIDER_FAULT]      = {	.gpio_pin = eGPIO_SLIDER_BRIDGE_FAULT,  	.polarity = eBUTTON_POL_ACTIVE_HIGH,	.lpf_en = true,    .lpf_fc = 10.0f          },
 
-	// -------------------------------------------------------------------------------------------------------------------------
-	//	Gpio pin						Button polarity							LPF enable			Default LPF fc
-	// -------------------------------------------------------------------------------------------------------------------------
-	{ 	.gpio_pin = eGPIO_USER_BTN,		.polarity = eBUTTON_POL_ACTIVE_LOW,		.lpf_en = false, 	.lpf_fc = 1.0f 				},
-
-
-	// USER CODE END...
-
+    // USER CODE END...
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -65,14 +64,14 @@ static const button_cfg_t g_button_cfg[ eBUTTON_NUM_OF ] =
 
 ////////////////////////////////////////////////////////////////////////////////
 /**
-*		Get button configuration table
+*        Get button configuration table
 *
-* @return		pointer to configuration table
+* @return        pointer to configuration table
 */
 ////////////////////////////////////////////////////////////////////////////////
-const void * button_cfg_get_table(void)
+const button_cfg_t * button_cfg_get_table(void)
 {
-	return (button_cfg_t*) &g_button_cfg;
+    return (button_cfg_t*) &g_button_cfg;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
