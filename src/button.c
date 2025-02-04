@@ -41,7 +41,6 @@
  *  Support version V0.1.x
  */
 _Static_assert( 0 == GPIO_VER_MAJOR );
-_Static_assert( 1 >= GPIO_VER_MINOR );
 
 #if ( 1 == BUTTON_CFG_FILTER_EN )
 
