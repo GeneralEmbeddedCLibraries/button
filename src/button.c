@@ -47,9 +47,9 @@ _Static_assert( 0 == GPIO_VER_MAJOR );
     /**
      *  Compatibility check with Filter module
      *
-     *  Support version V2.x.x
+     *  Support version V3.x.x
      */
-    _Static_assert( 2 == FILTER_VER_MAJOR );
+    _Static_assert( 3 == FILTER_VER_MAJOR );
 
 #endif
 
@@ -78,7 +78,7 @@ _Static_assert( 0 == GPIO_VER_MAJOR );
 typedef struct
 {
     #if ( 1 == BUTTON_CFG_FILTER_EN )
-        p_filter_bool_t filt;       /**<Boolean filter */
+        filter_bool_t filt;       /**<Boolean filter */
     #endif
     pf_button_callback pressed;     /**<Button pressed callback */
     pf_button_callback released;    /**<Button released callback */
@@ -182,14 +182,12 @@ static button_status_t button_internal_init(void)
 
         #if ( 1 == BUTTON_CFG_FILTER_EN )
 
-            g_button[num].filt = NULL;
-
             // Filter enable?
             if ( true == gp_cfg_table[num].lpf_en )
             {
                 // Init filter
                 // NOTE: Comparator level set to 0.05 (5%/95%)---> 3*Tao is 95% for RC 1st order filter
-                if ( eFILTER_OK != filter_bool_init( &( g_button[num].filt ), gp_cfg_table[num].lpf_fc, BUTTON_HNDL_FREQ_HZ, 0.05f ))
+                if ( eFILTER_OK != filter_bool_init_static( &( g_button[num].filt ), gp_cfg_table[num].lpf_fc, BUTTON_HNDL_FREQ_HZ, 0.05f ))
                 {
                     BUTTON_PRINT( "BUTTON: LPF initialisation error at button number %d!", num );
                     BUTTON_ASSERT( 0 );
@@ -277,7 +275,6 @@ static button_state_t button_filter_update(const button_num_t num, const button_
 
     #if ( 1 == BUTTON_CFG_FILTER_EN )
         bool in  = false;
-        bool out = false;
 
         // Filter enabled
         if ( true == gp_cfg_table[num].lpf_en )
@@ -293,7 +290,7 @@ static button_state_t button_filter_update(const button_num_t num, const button_
             }
 
             // Update filter
-            (void) filter_bool_hndl( g_button[num].filt, in, &out );
+            const bool out = filter_bool_hndl( &g_button[num].filt, in );
 
             // Convert state
             if ( true == out )
@@ -807,7 +804,7 @@ button_status_t button_unregister_callback(const button_num_t num)
             if ( num < eBUTTON_NUM_OF )
             {
                 // Reset filter
-                if ( eFILTER_OK != filter_bool_reset( g_button[num].filt ))
+                if ( eFILTER_OK != filter_bool_reset( &g_button[num].filt ))
                 {
                     status = eBUTTON_ERROR;
                 }
@@ -861,7 +858,7 @@ button_status_t button_unregister_callback(const button_num_t num)
                 &&  ( true == gp_cfg_table[num].lpf_en ))
             {
                 // Change cutoff frequency
-                if ( eFILTER_OK != filter_bool_fc_set( g_button[num].filt, fc ))
+                if ( eFILTER_OK != filter_bool_fc_set( &g_button[num].filt, fc ))
                 {
                     status = eBUTTON_ERROR;
                 }
