@@ -858,7 +858,7 @@ button_status_t button_unregister_callback(const button_num_t num)
                 &&  ( true == gp_cfg_table[num].lpf_en ))
             {
                 // Change cutoff frequency
-                if ( eFILTER_OK != filter_bool_fc_set( &g_button[num].filt, fc ))
+                if ( eFILTER_OK != filter_bool_set_fc( &g_button[num].filt, fc ))
                 {
                     status = eBUTTON_ERROR;
                 }
